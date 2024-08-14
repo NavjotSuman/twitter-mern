@@ -6,7 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 // create a post 
 export const createPost = async (req, res) => {
     try {
-        const { text, img } = req.body;
+        let { text, img } = req.body;
         const myId = req.user._id;
         const user = await User.findById(myId);
 
@@ -33,7 +33,7 @@ export const createPost = async (req, res) => {
 
         res.status(201).json(newPost);
     } catch (error) {
-        console.log(`Error at createPost : ${error}`);
+        console.log(`Error at createPost : ${error.message}`);
         res.status(500).json({ error: `Internal Server Error` });
     }
 };
