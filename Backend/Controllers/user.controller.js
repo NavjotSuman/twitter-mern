@@ -104,7 +104,7 @@ export const updateUserProfile = async (req, res) => {
         const myId = req.user._id
         let user = await User.findById(myId)
 
-        const { username, fullName, currentPassword, newPassword, bio, link, email } = req.body;
+        let { username, fullName, currentPassword, newPassword, bio, link, email } = req.body;
         console.log(fullName)
         let { profileImg, coverImg } = req.body
 
@@ -151,8 +151,8 @@ export const updateUserProfile = async (req, res) => {
         user.email = email || user.email
         user.bio = bio || user.bio
         user.link = link || user.link
-        // user.profileImg = profileImg || user.profileImg
-        // user.coverImg = coverImg || user.coverImg
+        user.profileImg = profileImg || user.profileImg
+        user.coverImg = coverImg || user.coverImg
 
         user = await user.save()
 
