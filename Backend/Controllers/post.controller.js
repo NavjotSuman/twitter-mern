@@ -113,12 +113,13 @@ export const likeUnlikePost = async (req, res) => {
             // to unlike the post
             await Post.updateOne({ _id: postId }, { $pull: { likes: myId } });
             await User.updateOne({ _id: myId }, { $pull: { likedPosts: postId } });
-            res.status(200).json({ message: "Unliked the Post" });
+            const updateLikes = await post.likes.filter((id) => id.toString() !== myId.toString())
 
             // remove from notification if unfollowed and is
-            await Notification.deleteMany({
-                $and: [{ from: req.user._id }, { to: post.user }, { type: "like" }],
-            });
+            // await Notification.deleteMany({
+            //     $and: [{ from: req.user._id }, { to: post.user }, { type: "like" }],
+            // });
+            res.status(200).json(updateLikes);
         } else {
             // to like the post
             post.likes.push(myId);
@@ -132,7 +133,9 @@ export const likeUnlikePost = async (req, res) => {
                 type: "like",
             });
             await newNotfication.save();
-            res.status(200).json({ message: `Liked the Post successFully` });
+
+            const updateLikes = post.likes
+            res.status(200).json(updateLikes);
         }
     } catch (error) {
         console.log(`Error at likeunlikePost : ${error}`);
