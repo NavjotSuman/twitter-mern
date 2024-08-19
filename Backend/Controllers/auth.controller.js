@@ -10,7 +10,6 @@ import User from "../models/user.model.js";
 
 //  ====================== SINGUP: ===================================
 export const signup = async (req, res) => {
-  // console.log(req.body)
   try {
     const { fullName, username, email, password } = req.body;
 
@@ -50,7 +49,6 @@ export const signup = async (req, res) => {
     })
 
     if (newUser) {
-      // console.log(`checking the newUSer object id (comment it) : ${newUser._id}`)
 
       generateTokenAndSetCookie(newUser._id, res)
       newUser.save()
@@ -81,7 +79,6 @@ export const signup = async (req, res) => {
 
 //  ======================= LOGIN: =====================================
 export const login = async (req, res, next) => {
-  // console.log(req.body)
   try {
     const { username, password } = req.body;
 

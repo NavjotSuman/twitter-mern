@@ -40,7 +40,6 @@ const ProfilePage = () => {
     queryFn: async () => {
       try {
         const res = await fetch(`/api/user/profile/${username}`);
-        console.log("res is :", res);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
@@ -52,40 +51,41 @@ const ProfilePage = () => {
     },
   });
 
-  const { mutate: updateProfile, isPending: isUpdatingProfile } = useMutation({
-    mutationFn: async (params) => {
-      try {
-        const res = await fetch(`/api/user/update`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            coverImg,
-            profileImg,
-          }),
-        });
-        const data = await res.json();
+  const { mutateAsync: updateProfile, isPending: isUpdatingProfile } =
+    useMutation({
+      mutationFn: async (params) => {
+        try {
+          const res = await fetch(`/api/user/update`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              coverImg,
+              profileImg,
+            }),
+          });
+          const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error(data.error);
+          if (!res.ok) {
+            throw new Error(data.error);
+          }
+          return data;
+        } catch (error) {
+          throw new Error(error);
         }
-        return data;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    onSuccess: () => {
-      toast.success("Profile updated successfully");
-      Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-        queryClient.invalidateQueries({ queryKey: ["userProfile"] }),
-      ]);
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+      },
+      onSuccess: () => {
+        toast.success("Profile updated successfully");
+        Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+          queryClient.invalidateQueries({ queryKey: ["userProfile"] }),
+        ]);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
 
   const isMyProfile = authUser._id === user?._id;
   const amIFollowing = authUser?.following.includes(user?._id);
@@ -161,8 +161,8 @@ const ProfilePage = () => {
                   <div className="w-32 rounded-full relative group/avatar">
                     <img
                       src={
-                        user?.profileImg ||
                         profileImg ||
+                        user?.profileImg ||
                         "/avatar-placeholder.png"
                       }
                     />
@@ -192,7 +192,9 @@ const ProfilePage = () => {
                 {(coverImg || profileImg) && (
                   <button
                     className="btn btn-primary rounded-full btn-sm text-white px-4 ml-2"
-                    onClick={() => updateProfile()}
+                    onClick={async () => {
+                      await updateProfile();
+                    }}
                   >
                     {isUpdatingProfile ? (
                       <LoadingSpinner size="md" />

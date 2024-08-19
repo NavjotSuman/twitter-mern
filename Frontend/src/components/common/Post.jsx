@@ -32,7 +32,7 @@ const Post = ({ post }) => {
         });
         const data = await res.json();
         if (!res.ok) {
-          console.error(data.error || "Somthing Went Wrong");
+          throw new Error(data.error || "Somthing Went Wrong");
         }
         return data;
       } catch (error) {

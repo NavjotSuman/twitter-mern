@@ -39,7 +39,6 @@ const LoginPage = () => {
           throw new Error(data.error || "Somthing went wrong");
         }
       } catch (error) {
-        console.log(error);
         throw new Error(error);
       }
     },

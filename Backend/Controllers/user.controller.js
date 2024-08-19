@@ -157,7 +157,6 @@ export const updateUserProfile = async (req, res) => {
         user = await user.save()
 
         user.password = null
-        // console.log(user)
         res.status(200).json(user)
 
     } catch (error) {

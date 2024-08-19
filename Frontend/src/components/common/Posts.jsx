@@ -21,7 +21,6 @@ const Posts = ({ feedType, username, userId }) => {
 
   const POST_ENDPOINT = getPostEndpoint();
 
-  console.log(POST_ENDPOINT);
 
   const {
     data: postsData,

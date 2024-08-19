@@ -28,7 +28,6 @@ const CreatePost = () => {
           body: JSON.stringify({ text, img }),
         });
         const data = await res.json();
-        console.log(res);
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
