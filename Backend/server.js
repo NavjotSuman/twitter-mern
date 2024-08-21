@@ -2,6 +2,7 @@ import express from "express";
 import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
+import path from "path"
 
 // impoting from our files
 import authRoutes from "./Routes/auth.route.js";
@@ -19,6 +20,7 @@ cloudinary.config({
 });
 const app = express();
 const PORT = process.env.PORT || 4000
+const __dirname = path.resolve();
 
 
 // middlewares
@@ -29,6 +31,13 @@ app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/notifications",notificationRoutes)
 
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "/Frontend/dist")));
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "Frontend", "dist", "index.html"));
+	});
+}
 
 
 

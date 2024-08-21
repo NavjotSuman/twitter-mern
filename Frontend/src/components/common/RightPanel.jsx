@@ -23,11 +23,12 @@ const RightPanel = () => {
       }
     },
   });
+  const { follow, isPending } = useFollow();
+  
   if (suggestedUsers?.length === 0) {
     return <div className="w-0 md:w-64"></div>;
   }
 
-  const { follow, isPending } = useFollow();
 
   return (
     <div className="hidden lg:block my-4 mx-2">
