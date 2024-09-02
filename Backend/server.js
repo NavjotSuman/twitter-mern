@@ -22,9 +22,10 @@ cloudinary.config({
 const app = express();
 const PORT = process.env.PORT || 4000;
 const __dirname = path.resolve();
+// console.log(process.env.NODE_ENV)
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://twitter-mern-2pxe.onrender.com",
   credentials: true,
 };
 app.use(cors(corsOptions));
