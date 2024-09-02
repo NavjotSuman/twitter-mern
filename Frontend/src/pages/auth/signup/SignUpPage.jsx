@@ -1,4 +1,4 @@
-import { json, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import XSvg from "../../../components/svgs/X";
@@ -117,14 +117,17 @@ const SignUpPage = () => {
           {isError && <p className="text-red-500">{error.message}</p>}
         </form>
         <div className="flex flex-col lg:w-2/3 gap-2 mt-4 ">
-          <p className="text-white text-lg">Already have an account?&nbsp;<Link to="/login" className="text-blue-900 underline">
+          <p className="text-white text-lg">
+            Already have an account?&nbsp;
+            <Link to="/login" className="text-blue-900 underline">
               Login
-            </Link></p>
-          {/* <Link to="/login">
+            </Link>
+          </p>
+          <Link to="/login">
             <button className="btn rounded-full btn-primary text-white btn-outline w-full">
               Sign in
             </button>
-          </Link> */}
+          </Link>
         </div>
       </div>
     </div>

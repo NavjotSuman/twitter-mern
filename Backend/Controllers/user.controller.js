@@ -91,7 +91,7 @@ export const getSuggestedUsers = async (req, res) => {
             (user) => !usersFollowedByMe.following.includes(user._id)
         );
         const suggestedUser = filteredUsers.slice(0, 4);
-        res.send(suggestedUser);
+        res.json(suggestedUser);
     } catch (error) {
         console.log(`Error at getSuggestedUSer : ${error}`);
         res.status(500).json({ error: error.message });
@@ -134,8 +134,11 @@ export const updateUserProfile = async (req, res) => {
             if (user.profileImg) {
                 await cloudinary.uploader.destroy(user.profileImg.split("/").pop().split(".")[0])
             }
+            console.log("Old Profile Image : ",profileImg)
             const uploadedResponse = await cloudinary.uploader.upload(profileImg)
+            console.log("Upload Image : ",uploadedResponse)
             profileImg = uploadedResponse.secure_url
+            console.log("new Profile Image : ",profileImg)
         }
         if (coverImg) {
             if (user.coverImg) {
